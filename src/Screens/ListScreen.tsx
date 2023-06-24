@@ -1,0 +1,31 @@
+import React from "react";
+import { View, Text, FlatList, ListRenderItem } from "react-native";
+import Product, { IProduct } from "../Components/ProductComponent";
+
+const ListScreen = () =>{
+    // const products:IProduct[] = [
+    //     {
+    //         name: "Alu",
+    //         id: 1
+    //     },
+    //     {
+    //         name: "Piyaj",
+    //         id: 2
+    //     },
+    //     {
+    //         name: "Roshun",
+    //         id: 3
+    //     }
+    // ]
+    // const handleRenderItem : ListRenderItem<IProduct> = ({item}) =>
+    //     <Product name={item.name} id={item.id}/>;
+    
+    return(
+        <View>
+            <Text>WELCOME TO LIST SCREEN</Text>
+            {/* <FlatList data={products} renderItem={handleRenderItem}/> */}
+        </View>
+    )
+}
+
+export default ListScreen;
