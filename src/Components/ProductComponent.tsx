@@ -1,22 +1,25 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
 export interface IProduct{
     name: string
     id: number
 }
 
-const Product = (props: IProduct) =>{
-    return(
-        <View>
-            <Text>
-                {props.id}
-            </Text>
-            <Text>
-                {props.name}
-            </Text>
-        </View>
-    )
+const ProductComponent = (props: IProduct) =>{
+    return (<View style={styles.mainContainer}>
+        <Text>{props.name}</Text>
+    </View>)
 }
 
-export default Product;
+const styles = StyleSheet.create({
+    mainContainer:{
+        backgroundColor: "#cef5d8",
+        height: 20,
+        marginBottom: 10,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})
+export default ProductComponent;
