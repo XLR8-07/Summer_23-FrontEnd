@@ -3,17 +3,34 @@ import { Button, View, TextInput, Image, StyleSheet } from "react-native";
 // import UIULogo from "../../assets/public/icons/uiu_logo.png";
 import Logo from "../../assets/public/icons/uiu_logo.png";
 
-const LoginScreen=()=>{
+const LoginScreen=(props:any)=>{
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const match = {
+        'email' : 'test@gmail.com',
+        'password': 'abcd1234'
+    }
+
+    const handleOnSubmit = ()=>{
+        if(email === match['email'] && password === match['password'])
+        {
+            console.log("SUCCESSFULL")
+            props.navigation.navigate("Counter")
+        }
+        else
+        {
+            console.log("FAILED")
+        }
+    }
+
     const handleEmailInput = (emailInput:string) =>{
-        console.log(emailInput)
+        // console.log(emailInput)
         setEmail(emailInput)
     }
 
     const handlePassInput = (passInput: string) =>{
-        console.log(passInput)
+        // console.log(passInput)
         setPassword(passInput)
     }
     return(
@@ -24,7 +41,7 @@ const LoginScreen=()=>{
                 <TextInput value={password} onChangeText={handlePassInput}style={styles.inputStyles}/>
             </View>
             <View>
-                <Button title="Submit"/>
+                <Button title="Submit" onPress={handleOnSubmit}/>
             </View>
         </View>
     )
