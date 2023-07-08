@@ -9,6 +9,10 @@ const HomeScreen = (props: any)=>{
     const handleCounterScreen=()=>{
         props.navigation.navigate("Counter")
     }
+
+    const handleLoginScreen=()=>{
+        props.navigation.navigate("SignIn")
+    }
     return(
         <SafeAreaView>
             <View>
@@ -17,6 +21,7 @@ const HomeScreen = (props: any)=>{
             </Text>
             <Button title="GO TO LIST SCREEN" onPress={handleListScreen}></Button>
             <Button title="GO TO Counter SCREEN" onPress={handleCounterScreen}></Button>
+            <Button title="LOG IN" onPress={handleLoginScreen}></Button>
         </View>
         </SafeAreaView>
         
