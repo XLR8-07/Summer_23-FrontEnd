@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View,Text, Button, StyleSheet } from "react-native";
+import { View,Text, StyleSheet, Pressable, Button } from "react-native";
+import { AuthContext, IAuthProvider } from "../providers/AuthProvider";
 
 const CounterScreen = () =>{
     const [Counter, setCounter] = useState(5);
@@ -12,14 +13,27 @@ const CounterScreen = () =>{
         setCounter(Counter-1)
         console.log(Counter)
     }
+
+    const handleLogOut = (auth: IAuthProvider)=>{
+        auth.setIsLoggedIn(false)
+    }
     return(
-        <View style={styles.mainContainer}>
+        <AuthContext.Consumer>
+        {(auth)=><View style={styles.mainContainer}>
             <Text style={styles.counterStyles}>{Counter}</Text>
-            <View>
-                <Button title="Increase" onPress={()=>{handleIncrease()}}></Button>
-                <Button title="Decrease" onPress={()=>{handleDecrease()}}></Button>
+            <View style={styles.buttonContainer}>
+                <Pressable style={styles.buttonStyles} onPress={()=>{handleIncrease()}}>
+                    <Text>Increase</Text>
+                </Pressable>
+                <Pressable style={styles.buttonStyles} onPress={()=>{handleDecrease()}}>
+                    <Text>Decrease</Text>
+                </Pressable>
             </View>
-        </View>
+            <View>
+                <Button title="Log Out" onPress={()=>handleLogOut(auth as IAuthProvider)}/>
+            </View>
+        </View>}
+        </AuthContext.Consumer>
     )
 }
 
@@ -38,6 +52,16 @@ const styles = StyleSheet.create({
         display: 'flex',
         marginTop: 40,
         flexDirection: 'row'
+    },
+    buttonStyles:{
+        margin: 10,
+        backgroundColor: "#87e09f",
+        borderRadius: 4,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        shadowRadius: 3
     }
 })
 
