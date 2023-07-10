@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, View, TextInput, Image, StyleSheet } from "react-native";
 // import UIULogo from "../../assets/public/icons/uiu_logo.png";
 import Logo from "../../assets/public/icons/uiu_logo.png";
+import { AuthContext, IAuthProvider } from "../providers/AuthProvider";
 
 const LoginScreen=(props:any)=>{
     const [email, setEmail] = useState('')
@@ -12,11 +13,12 @@ const LoginScreen=(props:any)=>{
         'password': 'abcd1234'
     }
 
-    const handleOnSubmit = ()=>{
+    const handleOnSubmit = (authData: IAuthProvider)=>{
         if(email === match['email'] && password === match['password'])
         {
             console.log("SUCCESSFULL")
-            props.navigation.navigate("Counter")
+            authData.setIsLoggedIn(true)
+            // props.navigation.navigate("Counter")
         }
         else
         {
@@ -34,16 +36,18 @@ const LoginScreen=(props:any)=>{
         setPassword(passInput)
     }
     return(
-        <View style={styles.mainContainer}>
+        <AuthContext.Consumer>
+        {(auth)=><View style={styles.mainContainer}>
             <Image source={Logo} style={styles.imageStyles}/>
             <View style={styles.inputContainer}>
                 <TextInput value={email} onChangeText={handleEmailInput} style={styles.inputStyles}/>
                 <TextInput value={password} onChangeText={handlePassInput}style={styles.inputStyles}/>
             </View>
             <View>
-                <Button title="Submit" onPress={handleOnSubmit}/>
+                <Button title="Submit" onPress={()=>handleOnSubmit(auth as IAuthProvider)}/>
             </View>
-        </View>
+        </View>}
+        </AuthContext.Consumer>
     )
 }
 

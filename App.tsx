@@ -5,6 +5,7 @@ import HomeScreen from "./src/Screens/HomeScreen";
 import ListScreen from "./src/Screens/ListScreen";
 import CounterScreen from "./src/Screens/CounterScreen";
 import LoginScreen from "./src/Screens/LoginScreen";
+import { AuthContext, AuthProvider } from "./src/providers/AuthProvider";
 // npm install @react-navigation/native
 // npm install @react-navigation/stack
 // npm install react-native-safe-area-view
@@ -12,17 +13,31 @@ import LoginScreen from "./src/Screens/LoginScreen";
 
 
 const stack = createStackNavigator();
+const AuthStack = createStackNavigator();
+
+const AuthStackScreens = () =>{
+  return(
+    <AuthStack.Navigator initialRouteName="SignIn">
+      <AuthStack.Screen name="SignIn" component={LoginScreen} options={{headerShown: false}}/>
+    </AuthStack.Navigator>
+  )
+}
 
 function App(){
  return(
-  <NavigationContainer>
-    <stack.Navigator>
-      <stack.Screen name="MAD(A)" component={HomeScreen}/>
+  <AuthProvider>
+    <AuthContext.Consumer>
+  {(auth)=><NavigationContainer>
+    {/* <stack.Navigator> */}
+      {/* <stack.Screen name="MAD(A)" component={HomeScreen}/>
       <stack.Screen name="List Of Products" component={ListScreen}/>
       <stack.Screen name="Counter" component={CounterScreen}/>
-      <stack.Screen name="SignIn" component={LoginScreen}/>
-    </stack.Navigator>
-  </NavigationContainer>
+      <stack.Screen name="SignIn" component={LoginScreen}/> */}
+      {auth?.isLoggedIn? <CounterScreen/> : <AuthStackScreens/>}
+    {/* </stack.Navigator> */}
+  </NavigationContainer>}
+  </AuthContext.Consumer>
+  </AuthProvider>
  )
 }
 
