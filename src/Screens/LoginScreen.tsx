@@ -1,8 +1,22 @@
 import React, { useState } from "react";
-import { Button, View, TextInput, Image, StyleSheet } from "react-native";
+import { Button, View, TextInput, Image, StyleSheet, Text } from "react-native";
 // import UIULogo from "../../assets/public/icons/uiu_logo.png";
 import Logo from "../../assets/public/icons/uiu_logo.png";
 import { AuthContext, IAuthProvider } from "../providers/AuthProvider";
+import axios from "axios";
+
+export interface INationalizeResponse
+{
+    count: number
+    name: string
+    country: ICountry[] 
+}
+
+export interface ICountry
+{
+    country_id: string
+    probability: number
+}
 
 const LoginScreen=(props:any)=>{
     const [email, setEmail] = useState('')
@@ -41,7 +55,24 @@ const LoginScreen=(props:any)=>{
     const handleNameInput = (userInput: string) =>{
         setNameInput(userInput)
     }
-    
+
+    const handleGetNationality = async() =>{
+        const response = await axios.get(`https://api.nationalize.io?name=${nameInput}`)
+        setNationalityFromAPI(response.data)
+    }
+
+    const setNationalityFromAPI = (response: INationalizeResponse) =>
+    {
+        if(response.country.length > 0)
+        {
+            setNationality(response.country[0].country_id)
+        }
+        else
+        {
+            setNationality("")
+        }
+    }
+
     return(
         <AuthContext.Consumer>
         {(auth)=><View style={styles.mainContainer}>
@@ -51,12 +82,14 @@ const LoginScreen=(props:any)=>{
                 <TextInput value={password} onChangeText={handlePassInput}style={styles.inputStyles}/>
                 <TextInput value={nameInput} onChangeText={handleNameInput}style={styles.inputStyles}/>
             </View>
-            <View>
+            <View style={styles.buttonContainer}>
                 <Button title="Submit" onPress={()=>handleOnSubmit(auth as IAuthProvider)}/>
-                <Button title="GET NATIONALITY" onPress={()=>{console.log("CLICKED!")}}/>
+            </View>
+            <View style={styles.buttonContainer}>
+                <Button title="GET NATIONALITY" onPress={handleGetNationality}/>
             </View>
             <View>
-
+                <Text>{nationality}</Text> 
             </View>
         </View>}
         </AuthContext.Consumer>
@@ -86,6 +119,10 @@ const styles=StyleSheet.create({
         borderWidth: 1,
         borderRadius: 8,
         fontSize: 25
+    },
+    buttonContainer:{
+        margin: 15
     }
+    
 })
 export default LoginScreen;
