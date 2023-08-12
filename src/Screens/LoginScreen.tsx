@@ -7,6 +7,8 @@ import { AuthContext, IAuthProvider } from "../providers/AuthProvider";
 const LoginScreen=(props:any)=>{
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [nameInput, setNameInput] = useState('') // TO TAKE INPUT FROM USER
+    const [nationality, setNationality] = useState('') // TO SHOW THE NATIONALITY
 
     const match = {
         'email' : 'test@gmail.com',
@@ -35,6 +37,11 @@ const LoginScreen=(props:any)=>{
         // console.log(passInput)
         setPassword(passInput)
     }
+
+    const handleNameInput = (userInput: string) =>{
+        setNameInput(userInput)
+    }
+    
     return(
         <AuthContext.Consumer>
         {(auth)=><View style={styles.mainContainer}>
@@ -42,9 +49,14 @@ const LoginScreen=(props:any)=>{
             <View style={styles.inputContainer}>
                 <TextInput value={email} onChangeText={handleEmailInput} style={styles.inputStyles}/>
                 <TextInput value={password} onChangeText={handlePassInput}style={styles.inputStyles}/>
+                <TextInput value={nameInput} onChangeText={handleNameInput}style={styles.inputStyles}/>
             </View>
             <View>
                 <Button title="Submit" onPress={()=>handleOnSubmit(auth as IAuthProvider)}/>
+                <Button title="GET NATIONALITY" onPress={()=>{console.log("CLICKED!")}}/>
+            </View>
+            <View>
+
             </View>
         </View>}
         </AuthContext.Consumer>
