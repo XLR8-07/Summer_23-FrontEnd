@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, View, TextInput, Image, StyleSheet, Text } from "react-native";
 // import UIULogo from "../../assets/public/icons/uiu_logo.png";
 import Logo from "../../assets/public/icons/uiu_logo.png";
@@ -24,22 +24,23 @@ const LoginScreen=(props:any)=>{
     const [nameInput, setNameInput] = useState('') // TO TAKE INPUT FROM USER
     const [nationality, setNationality] = useState('') // TO SHOW THE NATIONALITY
 
-    const match = {
-        'email' : 'test@gmail.com',
-        'password': 'abcd1234'
-    }
 
     const handleOnSubmit = (authData: IAuthProvider)=>{
-        if(email === match['email'] && password === match['password'])
-        {
-            console.log("SUCCESSFULL")
-            authData.setIsLoggedIn(true)
-            // props.navigation.navigate("Counter")
+        const body={
+            email: email,
+            password: password
         }
-        else
+        axios.post(`http://10.10.115.2:3000/playground/auth`,body).then((response)=>{
+            if(response.data)
+            {
+                console.log("SUCCESSFULL")
+                authData.setIsLoggedIn(true)
+            }
+            else
         {
             console.log("FAILED")
         }
+        })
     }
 
     const handleEmailInput = (emailInput:string) =>{
@@ -72,6 +73,13 @@ const LoginScreen=(props:any)=>{
             setNationality("")
         }
     }
+
+
+    useEffect(()=>{
+        axios.get("http://10.10.115.2:3000/playground/shariful").then((response)=>{
+            console.log(response.data)
+        })
+    },[])
 
     return(
         <AuthContext.Consumer>
